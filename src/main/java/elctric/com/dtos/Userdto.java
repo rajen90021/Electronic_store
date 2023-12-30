@@ -1,5 +1,8 @@
 package elctric.com.dtos;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.validation.constraints.Email;
@@ -7,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import elctric.com.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,4 +50,7 @@ public class Userdto {
 	
 	
 	private String imageName;
+	
+	
+	private Set<RoleDto> role =new HashSet<>() ;
 }

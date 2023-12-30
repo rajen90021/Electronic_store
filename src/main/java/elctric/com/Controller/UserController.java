@@ -14,7 +14,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StreamUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +37,7 @@ import elctric.com.service.implement.fileserviceimp;
 
 @RestController
 @RequestMapping("/users")
+
 public class UserController {
 
 	
@@ -63,6 +66,7 @@ public class UserController {
 	
 	
 	//delete
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{userid}")
 	  public ResponseEntity<apiResponse>  deleteuser(@PathVariable String userid){
 		  
@@ -75,7 +79,7 @@ public class UserController {
 	  }
 	  
 	//get single user by id
-	
+	  @PreAuthorize("hasRole('NORMAL')")
 	@GetMapping("/{userid}")
 	public ResponseEntity<Userdto> getsinguserbyid(@PathVariable String userid){
 		
@@ -99,6 +103,7 @@ public class UserController {
 	}
 	
 	//get all user
+	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping
 	public ResponseEntity<pagableResponse<Userdto>> getalluser(@RequestParam(value = "pagenumber",defaultValue = "0",required = false)int pagenumber
 			,@RequestParam( value = "pagesize",defaultValue = "10",required = false) int pagesize,

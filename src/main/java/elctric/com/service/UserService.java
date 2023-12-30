@@ -4,12 +4,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import elctric.com.dtos.Userdto;
 import elctric.com.dtos.pagableResponse;
+import elctric.com.entity.Users;
 
 
 @Service
@@ -54,5 +56,9 @@ public interface UserService {
 //	serve image
 	
 	public InputStream serveimage(String path,String imagename)throws FileNotFoundException;
+	
+	
+	
+	Optional<Users> findUsersByEmailOptional(String email);
 	
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,6 +45,7 @@ public class ProductController {
 	 
 	 
 //	 create
+	 @PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<ProductDto> create(@RequestBody ProductDto dto){
 		
@@ -59,6 +61,7 @@ public class ProductController {
 	
 	
 //	delete 
+	 @PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{productid}")
 	public ResponseEntity<apiResponse> delete(@PathVariable("productid") String productid){
 		  
@@ -76,6 +79,7 @@ public class ProductController {
 	
 	
 //	update 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{productid}")
 	public ResponseEntity<ProductDto> update( @RequestBody ProductDto dto,@PathVariable("productid") String productid){
 		
@@ -165,6 +169,7 @@ public class ProductController {
 	
 	
 //	upload iamge 
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/image/{productid}")
 	public ResponseEntity<imageresponse> uploadimage(@PathVariable("productid") String productid , @RequestParam("file") MultipartFile file) throws IOException{
 		

@@ -21,14 +21,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import elctric.com.dtos.Userdto;
 import elctric.com.dtos.pagableResponse;
+import elctric.com.entity.Role;
 import elctric.com.entity.Users;
 import elctric.com.exception.ResourceNotFoundException;
 import elctric.com.exception.filenotfoundexpection;
+import elctric.com.repository.RoleRepository;
 import elctric.com.repository.UserRepository;
 import elctric.com.service.UserService;
 
@@ -47,9 +50,16 @@ public class userServiceImp implements UserService {
 //	 @Value("${image/user/}")
 	  @Value("${user.profile.image.path:image/user/}")
 	    private String uploadImagePath;
-	
+	  String normalroleid= "sdfgdhtfbxzf";
+	  
+	  
+	  @Autowired
+	  private RoleRepository roleRepository;
+	  @Autowired
+  private PasswordEncoder passwordEncoder;
 	//create user
 	
+	  
 	@Override
 	public Userdto createUser(Userdto userdto) {
 	
@@ -57,9 +67,17 @@ public class userServiceImp implements UserService {
 		   String userid = UUID.randomUUID().toString();
 		   
 		   userdto.setId(userid);
-		
+		   
+   userdto.setPassword(passwordEncoder.encode(userdto.getPassword()));		
 		 Users users = this.mapper.map(userdto, Users.class);
 		 
+		  Optional<Role> roleid = roleRepository.findById(normalroleid);
+		  Role role =null;
+		  if(roleid.isPresent()) {
+			  role = roleid.get();
+		  }
+		 
+		     users.getRole().add(role);		
 		 Users save = this.repository.save(users);
 		 
 		 
@@ -184,7 +202,7 @@ public class userServiceImp implements UserService {
 	public Userdto getUserByEmail(String email) {
 		
 		Users users=null;
-	Optional<Users> userByEmail = this.repository.getUserByEmail(email);
+	Optional<Users> userByEmail = this.repository.findByEmail(email);
 	
 	  if(userByEmail.isPresent()) {
 	    	
@@ -328,6 +346,13 @@ public class userServiceImp implements UserService {
 			InputStream inputStream= new FileInputStream(fullpath);
 			
 			return inputStream;
+	}
+
+
+	@Override
+	public Optional<Users> findUsersByEmailOptional(String email) {
+
+       return this.repository.findByEmail(email);
 	}
 
 

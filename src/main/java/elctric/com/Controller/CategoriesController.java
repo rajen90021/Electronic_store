@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,6 +46,8 @@ public class CategoriesController {
 	 @Value("${categories.profile.image.path:image/categories/}")
 	private String uploadpath;
 	
+	 
+	 @PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<CategoriesDto> createCategory(@Valid @RequestBody CategoriesDto categoriesDto){
 		
@@ -54,6 +57,8 @@ public class CategoriesController {
 		
 		
 	}
+	 
+	 @PreAuthorize("hasRole('ADMIN')")
 	@PutMapping("/{categoryid}")
 	public ResponseEntity<CategoriesDto> updateuser(@Valid @PathVariable String categoryid,@RequestBody CategoriesDto categorydto){
 		
@@ -63,6 +68,8 @@ public class CategoriesController {
 		
 	}
 
+	 
+	 @PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("/{Categoryid}")
 	public ResponseEntity<apiResponse> delete(@PathVariable("Categoryid") String Categoryid){
 		
